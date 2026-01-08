@@ -17,7 +17,7 @@ class DashboardViewModel: ObservableObject {
     @Published var isServerRunning: Bool = false
     @Published var disabledHosts: Set<String> = []
     
-    private var serverService: WebSocketService
+    private var serverService: ServerServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
     var availableHosts: [String] {
@@ -41,7 +41,7 @@ class DashboardViewModel: ObservableObject {
     }
     
     init() {
-        self.serverService = WebSocketService()
+        self.serverService = ServerServiceProtocol()
         setupBindings()
         self.toggleServer()
     }
