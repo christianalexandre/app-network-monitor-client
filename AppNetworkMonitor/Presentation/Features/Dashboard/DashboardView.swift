@@ -23,7 +23,7 @@ struct DashboardView: View {
                     .foregroundColor(.secondary)
             }
         }
-        .searchable(text: $viewModel.searchText, placement: .sidebar, prompt: "Search URL, Method...")
+        .searchable(text: $viewModel.searchText, placement: .sidebar, prompt: "Search...")
         .toolbar {
             ToolbarItemGroup(placement: .automatic) {
                 HStack(spacing: 6) {

@@ -26,7 +26,7 @@ struct SidebarView: View {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .symbolVariant(hasActiveFilters ? .fill : .none)
                 }
-                .help("Filter Hosts")
+                .help("Filters")
             }
         }
     }

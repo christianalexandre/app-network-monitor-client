@@ -30,21 +30,33 @@ class DashboardViewModel: ObservableObject {
         let sortedLogs = allLogs.sorted { $0.timestamp > $1.timestamp }
         
         return sortedLogs.filter { log in
-            // Filtro por host
             if disabledHosts.contains(log.host) {
                 return false
             }
             
-            // Filtro por status code category
             let category = StatusCodeCategory.category(for: log.statusCode)
             if disabledStatusCategories.contains(category) {
                 return false
             }
             
             guard !searchText.isEmpty else { return true }
-            return log.url.localizedCaseInsensitiveContains(searchText) ||
-            log.method.localizedCaseInsensitiveContains(searchText) ||
-            String(log.statusCode).contains(searchText)
+            
+            if log.url.localizedCaseInsensitiveContains(searchText) ||
+                log.method.localizedCaseInsensitiveContains(searchText) ||
+                String(log.statusCode).contains(searchText) {
+                return true
+            }
+            
+            if let requestBody = log.requestBody,
+               requestBody.localizedCaseInsensitiveContains(searchText) {
+                return true
+            }
+            if let responseBody = log.responseBody,
+               responseBody.localizedCaseInsensitiveContains(searchText) {
+                return true
+            }
+            
+            return false
         }
     }
     
