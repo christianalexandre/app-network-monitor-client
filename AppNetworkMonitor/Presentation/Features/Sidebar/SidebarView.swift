@@ -24,11 +24,15 @@ struct SidebarView: View {
                     showFilterSheet = true
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
-                        .symbolVariant(viewModel.disabledHosts.isEmpty ? .none : .fill)
+                        .symbolVariant(hasActiveFilters ? .fill : .none)
                 }
                 .help("Filter Hosts")
             }
         }
+    }
+    
+    private var hasActiveFilters: Bool {
+        !viewModel.disabledHosts.isEmpty || !viewModel.disabledStatusCategories.isEmpty
     }
 }
 

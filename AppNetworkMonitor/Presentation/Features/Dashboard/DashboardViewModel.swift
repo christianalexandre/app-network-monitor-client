@@ -16,6 +16,7 @@ class DashboardViewModel: ObservableObject {
     @Published var selectedLogId: UUID?
     @Published var isServerRunning: Bool = false
     @Published var disabledHosts: Set<String> = []
+    @Published var disabledStatusCategories: Set<StatusCodeCategory> = []
     
     private var serverService: ServerServiceProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -29,7 +30,14 @@ class DashboardViewModel: ObservableObject {
         let sortedLogs = allLogs.sorted { $0.timestamp > $1.timestamp }
         
         return sortedLogs.filter { log in
+            // Filtro por host
             if disabledHosts.contains(log.host) {
+                return false
+            }
+            
+            // Filtro por status code category
+            let category = StatusCodeCategory.category(for: log.statusCode)
+            if disabledStatusCategories.contains(category) {
                 return false
             }
             
@@ -84,5 +92,23 @@ class DashboardViewModel: ObservableObject {
 
     func hideAllHosts() {
         disabledHosts = Set(allLogs.map { $0.host })
+    }
+    
+    // MARK: - Status Code Filters
+    
+    func toggleStatusCategory(_ category: StatusCodeCategory) {
+        if disabledStatusCategories.contains(category) {
+            disabledStatusCategories.remove(category)
+        } else {
+            disabledStatusCategories.insert(category)
+        }
+    }
+    
+    func showAllStatusCategories() {
+        disabledStatusCategories.removeAll()
+    }
+    
+    func hideAllStatusCategories() {
+        disabledStatusCategories = Set(StatusCodeCategory.allCases)
     }
 }
