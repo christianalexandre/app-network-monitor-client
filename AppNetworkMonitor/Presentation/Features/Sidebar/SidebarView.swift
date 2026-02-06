@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SidebarView: View {
     @ObservedObject var viewModel: DashboardViewModel
-    @State private var showFilterPopover = false
+    @Binding var showFilterSheet: Bool
     
     var body: some View {
         List(viewModel.filteredLogs, selection: $viewModel.selectedLogId) { log in
@@ -21,15 +21,12 @@ struct SidebarView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    showFilterPopover.toggle()
+                    showFilterSheet = true
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .symbolVariant(viewModel.disabledHosts.isEmpty ? .none : .fill)
                 }
                 .help("Filter Hosts")
-                .popover(isPresented: $showFilterPopover, arrowEdge: .bottom) {
-                    FilterPopoverContent(viewModel: viewModel)
-                }
             }
         }
     }
@@ -76,67 +73,5 @@ struct LogRow: View {
             }
         }
         .padding(.vertical, 4)
-    }
-}
-
-struct FilterPopoverContent: View {
-    @ObservedObject var viewModel: DashboardViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            
-            HStack {
-                Text("Filter by Host").font(.headline)
-                Spacer()
-                
-                if !viewModel.availableHosts.isEmpty {
-                    Button("All") {
-                        viewModel.showAllHosts()
-                    }
-                    .font(.caption)
-                    .buttonStyle(.link)
-                    
-                    Text("|").foregroundColor(.secondary)
-                    
-                    Button("None") {
-                        viewModel.hideAllHosts()
-                    }
-                    .font(.caption)
-                    .buttonStyle(.link)
-                }
-            }
-            .padding(.bottom, 4)
-            
-            Divider()
-            
-            if viewModel.availableHosts.isEmpty {
-                Text("No requests yet")
-                    .foregroundColor(.secondary)
-                    .italic()
-                    .padding()
-            } else {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(viewModel.availableHosts, id: \.self) { host in
-                            let isOn = Binding<Bool>(
-                                get: { !viewModel.disabledHosts.contains(host) },
-                                set: { _ in viewModel.toggleHostVisibility(host) }
-                            )
-                            
-                            Toggle(isOn: isOn) {
-                                Text(host)
-                                    .font(.body)
-                                    .lineLimit(1)
-                            }
-                            .toggleStyle(.checkbox)
-                        }
-                    }
-                    .padding(.trailing, 8)
-                }
-                .frame(maxHeight: 300)
-            }
-        }
-        .padding()
-        .frame(width: 300)
     }
 }
