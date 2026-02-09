@@ -19,23 +19,46 @@ It acts as a local server, listening for incoming connections from your iOS apps
 
 Since this application is distributed outside the Mac App Store (and is unsigned), macOS Gatekeeper might block its execution.
 
-### Option A: Building from Source (Recommended)
+### Option A: Homebrew (Recommended)
+
+```bash
+brew tap christianalexandre/app-network-monitor-client
+brew install --cask app-network-monitor
+```
+
+After installation, you need to bypass macOS security once:
+
+```bash
+xattr -cr /Applications/AppNetworkMonitor.app
+```
+
+Then open the app normally.
+
+### Option B: Building from Source
+
 1. Clone this repository.
-2. Open `AppNetworkMonitorClient.xcodeproj` in Xcode.
+2. Open `AppNetworkMonitor.xcodeproj` in Xcode.
 3. Select your Mac as the destination.
 4. Press **Cmd + R** to build and run.
 
-### Option B: Running the Pre-compiled App
-If you received the `.app` file or downloaded a release version:
+### Option C: Manual Download
 
-1. Unzip the file.
-2. Drag `AppNetworkMonitor.app` to your **Applications** folder (optional).
-3. **First-time run fix:** If you see a message saying *"App is damaged"* or *"Can't be opened"*, run the following command in Terminal to bypass the quarantine:
+1. Download the latest `.zip` from [Releases](https://github.com/christianalexandre/homebrew-app-network-monitor-client/releases).
+2. Unzip and drag `AppNetworkMonitor.app` to your **Applications** folder.
+3. Run in Terminal to bypass macOS security:
     ```bash
-    # Replace path/to/app with the actual location
-    sudo xattr -cr /Applications/AppNetworkMonitor.app
+    xattr -cr /Applications/AppNetworkMonitor.app
     ```
 4. Double-click to open.
+
+### macOS Security Note
+
+Since the app is not signed with an Apple Developer certificate, macOS will block execution by default. The `xattr -cr` command removes the quarantine attribute, allowing the app to run. This is safe for apps you trust.
+
+Alternatively, you can:
+1. Try to open the app (it will fail)
+2. Go to **System Settings → Privacy & Security**
+3. Click **Open Anyway** next to the blocked app message
 
 ## How to Use
 

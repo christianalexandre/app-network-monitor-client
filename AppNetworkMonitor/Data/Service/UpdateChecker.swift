@@ -47,7 +47,7 @@ final class UpdateChecker: ObservableObject {
     private let repoOwner = "christianalexandre"
     
     /// GitHub repository name
-    private let repoName = "app-network-monitor-client"
+    private let repoName = "homebrew-app-network-monitor-client"
     
     /// UserDefaults key for launch count
     private let launchCountKey = "AppLaunchCount"

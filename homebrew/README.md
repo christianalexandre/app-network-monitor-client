@@ -28,7 +28,7 @@ shasum -a 256 AppNetworkMonitor-X.Y.Z.zip
 
 ### 3. Create GitHub Release
 
-1. Go to [Releases](https://github.com/christianalexandre/app-network-monitor-client/releases)
+1. Go to [Releases](https://github.com/christianalexandre/homebrew-app-network-monitor-client/releases)
 2. **Draft a new release**
 3. Tag: `X.Y.Z` (e.g., `1.0.0`)
 4. Upload `AppNetworkMonitor-X.Y.Z.zip`
